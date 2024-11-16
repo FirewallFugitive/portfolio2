@@ -83,6 +83,9 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
 
     }
+    /**
+     * Update the user's about me information.
+     */
     public function updateAboutMe(Request $request): RedirectResponse
     {
         $request->validate([
@@ -95,6 +98,5 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit')->with('status', 'about-updated');
     }
-
 
 }

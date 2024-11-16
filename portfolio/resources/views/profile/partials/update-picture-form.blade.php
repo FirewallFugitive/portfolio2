@@ -32,7 +32,7 @@
                     id="picture"
                     name="picture"
                     type="file"
-                    class="mt-1 block w-3/4"
+                    class="mt-1 block w-40 h-40 object-cover"
                     accept="image/*"
                 />
 
