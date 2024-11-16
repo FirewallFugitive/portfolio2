@@ -29,6 +29,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
+        
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -85,7 +86,7 @@ class ProfileController extends Controller
     public function updateAboutMe(Request $request): RedirectResponse
     {
         $request->validate([
-            'about_me' => 'required|string|max:1000', // Customize as needed
+            'about_me' => 'required|string|max:3000',
         ]);
 
         $user = $request->user();
