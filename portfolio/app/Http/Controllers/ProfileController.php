@@ -82,5 +82,18 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
 
     }
+    public function updateAboutMe(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'about_me' => 'required|string|max:1000', // Customize as needed
+        ]);
+
+        $user = $request->user();
+        $user->about_me = $request->input('about_me');
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'about-updated');
+    }
+
 
 }
