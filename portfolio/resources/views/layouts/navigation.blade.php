@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
                         {{ __('Create') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.faqs.create')" :active="request()->routeIs('admin.faqs.create')">
+                        {{ __('Add FAQ') }}
+                    </x-nav-link>
                 </div>
             </div>
 

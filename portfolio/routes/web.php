@@ -6,7 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
-
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\Admin\FaqController2;
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -44,7 +45,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile.picture.update');
     Route::put('/profile', [ProfileController::class, 'updateAboutMe'])->name('about.update');
 });
+
 Route::get('/dashboard-search', [DashboardController::class, 'searchUsers'])->name('search.users');
+
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+
+Route::delete('/admin/faqs/{faq}', [FaqController2::class, 'destroy'])->name('admin.faqs.destroy');
+Route::delete('/admin/categories/{category}', [FaqController2::class, 'destroyCategory'])->name('admin.categories.destroy');
+
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::resource('faqs', App\Http\Controllers\Admin\FaqController2::class)->names('admin.faqs');
+});
 
 require __DIR__.'/auth.php';
 
