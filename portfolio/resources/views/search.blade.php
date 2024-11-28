@@ -30,6 +30,29 @@
                                     {{ $user->about_me }}
                                 </div>
                             </div>
+                            
+                            <div class="mt-4">
+                                <p><strong>Email:</strong> {{ $user->email }}</p>
+                                <p><strong>Admin:</strong> {{ $user->is_admin ? 'Yes' : 'No' }}</p>
+                            </div>
+
+                            @if(auth()->check() && auth()->user()->is_admin)
+                                <div class="mt-4">
+                                    @if (!$user->is_admin)
+                                        <!-- Promote to Admin Button -->
+                                        <form method="POST" action="{{ route('users.promote', $user->id) }}">
+                                            @csrf
+                                            <button type="submit" class="px-4 py-2 bg-green-500 text-white">Promote to Admin</button>
+                                        </form>
+                                    @else
+                                        <!-- Demote from Admin Button -->
+                                        <form method="POST" action="{{ route('users.demote', $user->id) }}">
+                                            @csrf
+                                            <button type="submit" class="px-4 py-2 bg-red-500 text-white">Demote from Admin</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            @endif
                         </li>
                     @endforeach
                 </ul>

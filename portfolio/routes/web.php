@@ -3,7 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/users/{user}/promote', [AdminController::class, 'promote'])->name('users.promote');
+    Route::post('/users/{user}/demote', [AdminController::class, 'demote'])->name('users.demote');
+    Route::get('/users/create', [AdminController::class, 'showCreateForm'])->name('users.create');
+    Route::post('/users/create', [AdminController::class, 'createUser'])->name('users.store');
+});
+Route::aliasMiddleware('admin', AdminMiddleware::class);
+
 
 Route::get('/', function () {
     return view('welcome');

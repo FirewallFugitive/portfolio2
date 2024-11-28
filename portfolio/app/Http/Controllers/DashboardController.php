@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-    /**
-     * Search for users.
-     */
+    // search users
     public function searchUsers(Request $request): View
     {
         $users = User::where('name', 'like', '%' . $request->input('search') . '%')

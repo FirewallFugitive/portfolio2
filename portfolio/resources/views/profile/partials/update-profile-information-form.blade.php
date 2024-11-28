@@ -52,6 +52,12 @@
                 </div>
             @endif
         </div>
+        
+        <div>
+            <x-input-label for="admin" :value="__('Admin')" />
+            <x-text-input id="admin" name="admin" type="text" class="mt-1 block w-full" :value="$user->is_admin ? 'Yes' : 'No'" readonly />
+        </div>
+
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

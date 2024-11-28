@@ -9,16 +9,17 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    /**
-     * Send mail.
-     */
+    // Send mail.
     public function sendMail(Request $request)
     {
         $message = $request->message;
 
         try {
-            Mail::to('lucasmoons@hotmail.com')->send(new MailSent($message));
+            Mail::to('lucasmoons@hotmail.com')->send(
+                new MailSent($message, config('mail.from.address'), config('mail.from.name'))
+            );
         } catch (\Exception $e) {
+            \Log::error('Mail sending failed: ' . $e->getMessage());
             return back()->with('error', 'Failed to send message. Please try again.');
         }
 

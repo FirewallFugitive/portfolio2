@@ -29,7 +29,7 @@ class MailSent extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(auth()->user()->email, auth()->user()->name),  // Use Address class here
+            from: new Address(config('mail.from.address'), config('mail.from.name')),
             subject: 'Contact Form Submission',
         );
     }
