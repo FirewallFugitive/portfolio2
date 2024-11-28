@@ -12,18 +12,39 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    @if(auth()->check() && !auth()->user()->is_admin)
                     <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
                         {{ __('Contact') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
-                        {{ __('Create') }}
+
+                    <x-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.index')">
+                        {{ __('FAQ') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.faqs.create')" :active="request()->routeIs('admin.faqs.create')">
-                        {{ __('Add FAQ') }}
+
+                    <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.*')">
+                        {{ __('News') }}
                     </x-nav-link>
+                    @endif
+
+                    @if(auth()->check() && auth()->user()->is_admin)
+                        <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
+                            {{ __('Create') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.faqs.index')" :active="request()->routeIs('admin.faqs.index')">
+                            {{ __('FAQ') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('news.admin')" :active="request()->routeIs('news.admin')">
+                            {{ __('News') }}
+                        </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 

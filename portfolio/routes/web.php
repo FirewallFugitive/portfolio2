@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Admin\FaqController2;
+use App\Http\Controllers\NewsController;
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -15,6 +16,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/users/{user}/demote', [AdminController::class, 'demote'])->name('users.demote');
     Route::get('/users/create', [AdminController::class, 'showCreateForm'])->name('users.create');
     Route::post('/users/create', [AdminController::class, 'createUser'])->name('users.store');
+    Route::get('/news/admin', [NewsController::class, 'adminIndex'])->name('news.admin');
+
 });
 Route::aliasMiddleware('admin', AdminMiddleware::class);
 
@@ -57,6 +60,9 @@ Route::delete('/admin/categories/{category}', [FaqController2::class, 'destroyCa
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('faqs', App\Http\Controllers\Admin\FaqController2::class)->names('admin.faqs');
 });
+
+Route::resource('news', NewsController::class);
+
 
 require __DIR__.'/auth.php';
 
