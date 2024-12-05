@@ -2,3 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+.nav-link {
+    font-family: 'Playfair Display', serif; 
+    text-decoration: none;
+    color: #000;
+    text-shadow: 1px 1px 0 #808080;
+}
+
+.nav-link:hover {
+    color: #555;
+    text-shadow: 2px 2px 0 #000;
+}

@@ -21,7 +21,7 @@
                                 </div>
                             @else
                                 <div class="mt-2">
-                                    <img src="https://picsum.photos/id/237/200/200" alt="Default Profile Picture" >
+                                    <img src="https://picsum.photos/id/237/200/200" alt="Default Profile Picture">
                                 </div>
                             @endif
 
@@ -36,6 +36,21 @@
                                 <p><strong>Admin:</strong> {{ $user->is_admin ? 'Yes' : 'No' }}</p>
                             </div>
 
+                            <!-- Send Message Button -->
+                            <div class="mt-4">
+                                <form method="POST" action="{{ route('message.send') }}">
+                                    @csrf
+                                    <input type="hidden" name="sender_id" value="{{ auth()->id() }}">
+                                    <input type="hidden" name="receiver_id" value="{{ $user->id }}">
+                                    <div class="mt-4">
+                                        <a href="{{ route('message.compose', $user->id) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+                                            Send Message
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Admin Actions -->
                             @if(auth()->check() && auth()->user()->is_admin)
                                 <div class="mt-4">
                                     @if (!$user->is_admin)

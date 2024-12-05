@@ -48,4 +48,11 @@ class User extends Authenticatable
             'is_admin' => 'boolean',
         ];
     }
+    public function sentMessages() {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+    
+    public function receivedMessages() {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }

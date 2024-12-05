@@ -9,6 +9,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Admin\FaqController2;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\MessageController;
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -20,6 +21,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 Route::aliasMiddleware('admin', AdminMiddleware::class);
+
+Route::post('/contact', [ContactController::class, 'sendMail'])->name('contact');
 
 
 Route::get('/', function () {
@@ -35,11 +38,8 @@ Route::get('/guest-dashboard', function () {
 })->name('guest.dashboard');
 
 Route::get('/contact', function () {
-    return view('contact');
-})->middleware(['auth', 'verified'])->name('contact');
-
-
-Route::post('/contact', [ContactController::class, 'sendMail'])->middleware(['auth', 'verified'])->name('contact.send');
+    return view('contact'); // Zorg ervoor dat 'contact' verwijst naar de juiste Blade-template.
+})->name('contact');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile.picture.update');
     Route::put('/profile', [ProfileController::class, 'updateAboutMe'])->name('about.update');
+    Route::get('/inbox/{id}', [MessageController::class, 'inbox'])->name('inbox');
 });
 
 Route::get('/dashboard-search', [DashboardController::class, 'searchUsers'])->name('search.users');
@@ -63,6 +64,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
 Route::resource('news', NewsController::class);
 
+Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
+Route::get('/message/compose/{receiver_id}', [MessageController::class, 'compose'])->name('message.compose');
+Route::post('/message', [MessageController::class, 'send'])->name('message.send');
 
 require __DIR__.'/auth.php';
 

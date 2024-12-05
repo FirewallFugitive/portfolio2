@@ -14,14 +14,8 @@ class ContactController extends Controller
     {
         $message = $request->message;
 
-        try {
-            Mail::to('lucasmoons@hotmail.com')->send(
-                new MailSent($message, config('mail.from.address'), config('mail.from.name'))
-            );
-        } catch (\Exception $e) {
-            \Log::error('Mail sending failed: ' . $e->getMessage());
-            return back()->with('error', 'Failed to send message. Please try again.');
-        }
+        Mail::to('lucas.moons@student.ehb.be')->send(
+            new MailSent($request->all()));
 
         return redirect('/contact')->with('success', 'Message sent successfully!');
     }

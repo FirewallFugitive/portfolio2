@@ -14,35 +14,27 @@ class MailSent extends Mailable
     use Queueable, SerializesModels;
 
     public $message;
+    public $email;
+    public $name;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($message)
+    public function __construct($data)
     {
-        $this->message = $message;
+        $this->message = $data['messages'];
+        $this->email = $data['email'];
+        $this->name = $data['name'];
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Contact Form Submission',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'views.contact',
-            with: ['message' => $this->message]
-        );
+    public function build(){
+        return $this->subject('Message from ' . $this->email)
+            ->view('mail')
+            ->with([
+                'messages' => $this->message,
+                'email' => $this->email,
+                'name' => $this->name
+            ]);
     }
 }
 

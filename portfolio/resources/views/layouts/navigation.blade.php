@@ -13,34 +13,34 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"  class="nav-link">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     
                     @if(auth()->check() && !auth()->user()->is_admin)
-                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')"  class="nav-link">
                         {{ __('Contact') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.index')">
+                    <x-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.index')"  class="nav-link">
                         {{ __('FAQ') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.*')">
+                    <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.*')"  class="nav-link">
                         {{ __('News') }}
                     </x-nav-link>
                     @endif
 
                     @if(auth()->check() && auth()->user()->is_admin)
-                        <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
+                        <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')"  class="nav-link">
                             {{ __('Create') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('admin.faqs.index')" :active="request()->routeIs('admin.faqs.index')">
+                        <x-nav-link :href="route('admin.faqs.index')" :active="request()->routeIs('admin.faqs.index')"  class="nav-link">
                             {{ __('FAQ') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('news.admin')" :active="request()->routeIs('news.admin')">
+                        <x-nav-link :href="route('news.admin')" :active="request()->routeIs('news.admin')"  class="nav-link">
                             {{ __('News') }}
                         </x-nav-link>
                     @endif
