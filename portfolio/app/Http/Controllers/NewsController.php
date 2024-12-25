@@ -9,11 +9,26 @@ use App\Models\Reaction;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::orderBy('publication_date', 'desc')->get();
+        $query = News::query();
+
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('content', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('publication_date', $request->date);
+        }
+
+        $news = $query->orderBy('publication_date', 'desc')->get();
+
         return view('news.index', compact('news'));
     }
+
     public function adminIndex()
     {
         $news = News::orderBy('publication_date', 'desc')->get();

@@ -80,9 +80,14 @@
                                                     this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
-                            </form>
+                            </form> 
                         </x-slot>
                     </x-dropdown>
+                    <button 
+                        id="theme-toggle" 
+                        class="p-2 rounded-md text-gray-800 dark:text-gray-200 bg-gray-200 dark:bg-gray-700">
+                        <span id="theme-toggle-icon">🌙</span>
+                    </button>
                 @else
                     <!-- Add links for guest users -->
                     <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
