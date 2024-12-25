@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Reaction;
 
 class NewsController extends Controller
 {
@@ -88,6 +89,7 @@ class NewsController extends Controller
 
         return redirect()->route('news.index')->with('success', 'News item deleted successfully.');
     }
+
     public function storeComment(Request $request, News $news)
     {
         $request->validate([
@@ -101,4 +103,44 @@ class NewsController extends Controller
 
         return redirect()->route('news.show', $news->id)->with('success', 'Comment added successfully.');
     }
+
+    public function like(News $news)
+    {
+        $news->increment('likes'); 
+        return back()->with('success', 'You liked this post!');
+    }
+
+    public function dislike(News $news)
+    {
+        $news->increment('dislikes');
+        return back()->with('success', 'You disliked this post!');
+    }
+
+    public function react(Request $request, News $news)
+    {
+        $request->validate([
+            'type' => 'required|in:like,dislike',
+        ]);
+
+        $existingReaction = Reaction::where('news_id', $news->id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($existingReaction) {
+            if ($existingReaction->type === $request->type) {
+                $existingReaction->delete();
+            } else {
+                $existingReaction->update(['type' => $request->type]);
+            }
+        } else {
+            Reaction::create([
+                'news_id' => $news->id,
+                'user_id' => auth()->id(),
+                'type' => $request->type,
+            ]);
+        }
+
+        return redirect()->route('news.index')->with('success', 'Reaction added successfully.');
+    }
+
 }

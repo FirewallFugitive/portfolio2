@@ -9,7 +9,6 @@
                 </div>
                 <p class="mt-4">{{ $news->content }}</p>
             </div>
-
             <!-- Comments Section -->
             <div class="p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <h3 class="text-lg font-semibold">Comments</h3>

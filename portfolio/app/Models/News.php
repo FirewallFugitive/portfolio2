@@ -14,10 +14,18 @@ class News extends Model
         'image',
         'content',
         'publication_date',
+        'likes',
+        'dislikes',
     ];
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
     }
 
 }

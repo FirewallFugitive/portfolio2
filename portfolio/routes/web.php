@@ -39,9 +39,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::get('/guest-dashboard', function () {
     return view('guest-dashboard');
@@ -58,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile.picture.update');
     Route::put('/profile', [ProfileController::class, 'updateAboutMe'])->name('about.update');
     Route::get('/inbox/{id}', [MessageController::class, 'inbox'])->name('inbox');
+    Route::post('/news/{news}/react', [NewsController::class, 'react'])->name('news.react');
+
 });
 
 Route::get('/dashboard-search', [DashboardController::class, 'searchUsers'])->name('search.users');
@@ -79,6 +79,7 @@ Route::post('/news/{news}/comment', [NewsController::class, 'storeComment'])->na
 Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
 Route::get('/message/compose/{receiver_id}', [MessageController::class, 'compose'])->name('message.compose');
 Route::post('/message', [MessageController::class, 'send'])->name('message.send');
+
 
 require __DIR__.'/auth.php';
 

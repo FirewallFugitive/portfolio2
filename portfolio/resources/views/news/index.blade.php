@@ -22,6 +22,24 @@
                         <p class="mt-4 text-gray-800 dark:text-gray-200">
                             {{ Str::limit($item->content, 150, '...') }}
                         </p>
+                        <!-- Likes & Dislikes -->
+                        <div class="mt-4 flex items-center space-x-4">
+                            <form action="{{ route('news.react', $item->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="type" value="like">
+                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                                    👍 {{ $item->reactions->where('type', 'like')->count() }}
+                                </button>
+                            </form>
+
+                            <form action="{{ route('news.react', $item->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="type" value="dislike">
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+                                    👎 {{ $item->reactions->where('type', 'dislike')->count() }}
+                                </button>
+                            </form>
+                        </div>
                         <a href="{{ route('news.show', $item->id) }}" class="text-blue-500 hover:underline mt-2 block">
                             Read More
                         </a>

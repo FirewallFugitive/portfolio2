@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use App\Models\News;
 
 
 class DashboardController extends Controller
@@ -27,7 +28,8 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard');
+        $news = News::orderBy('publication_date', 'desc')->take(5)->get();
+        return view('dashboard', compact('news'));
     }
 
 }
