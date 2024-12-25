@@ -43,6 +43,10 @@
                         <x-nav-link :href="route('news.admin')" :active="request()->routeIs('news.admin')"  class="nav-link">
                             {{ __('News') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('admin.contact.index')" :active="request()->routeIs('admin.contact.index')"  class="nav-link">
+                            {{ __('Contact') }}
+                        </x-nav-link>
                     @endif
 
                 </div>

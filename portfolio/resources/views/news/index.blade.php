@@ -19,6 +19,12 @@
                         <div class="mt-4">
                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="rounded-md">
                         </div>
+                        <p class="mt-4 text-gray-800 dark:text-gray-200">
+                            {{ Str::limit($item->content, 150, '...') }}
+                        </p>
+                        <a href="{{ route('news.show', $item->id) }}" class="text-blue-500 hover:underline mt-2 block">
+                            Read More
+                        </a>
                     </div>
                 </div>
             @endforeach

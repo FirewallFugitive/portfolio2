@@ -15,4 +15,9 @@ class News extends Model
         'content',
         'publication_date',
     ];
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

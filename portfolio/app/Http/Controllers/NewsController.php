@@ -21,7 +21,8 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        return view('news.show', compact('news'));
+        $comments = $news->comments()->latest()->paginate(10);
+        return view('news.show', compact('news', 'comments'));
     }
 
     public function create()
@@ -86,5 +87,18 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()->route('news.index')->with('success', 'News item deleted successfully.');
+    }
+    public function storeComment(Request $request, News $news)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $news->comments()->create([
+            'user_id' => auth()->id(),
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->route('news.show', $news->id)->with('success', 'Comment added successfully.');
     }
 }
