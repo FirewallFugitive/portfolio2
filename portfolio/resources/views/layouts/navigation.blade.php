@@ -29,6 +29,10 @@
                     <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.*')"  class="nav-link">
                         {{ __('News') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('inbox')" :active="request()->routeIs('inbox')"  class="nav-link">
+                        {{ __('Inbox') }}
+                    </x-nav-link>
                     @endif
 
                     @if(auth()->check() && auth()->user()->is_admin)

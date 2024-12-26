@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\FaqController2;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Admin\AdminContactController;
+use App\Http\Controllers\ClothingController;
+use App\Http\Controllers\OutfitController;
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -55,8 +57,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile.picture.update');
     Route::put('/profile', [ProfileController::class, 'updateAboutMe'])->name('about.update');
-    Route::get('/inbox/{id}', [MessageController::class, 'inbox'])->name('inbox');
+
+    Route::get('/inbox', [MessageController::class, 'inbox'])->name('inbox');
+    Route::get('/chat/{user}', [MessageController::class, 'chat'])->name('chat');
+    Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+
     Route::post('/news/{news}/react', [NewsController::class, 'react'])->name('news.react');
+
+    Route::get('/clothing', [ClothingController::class, 'index'])->name('clothing.index');
+    Route::post('/clothing', [ClothingController::class, 'store'])->name('clothing.store');
+    Route::delete('/clothing/{id}', [ClothingController::class, 'destroy'])->name('clothing.destroy');
+
+
+    Route::get('/outfits', [OutfitController::class, 'index'])->name('outfits.index');
+    Route::post('/outfits', [OutfitController::class, 'store'])->name('outfits.store');
+    Route::get('/outfits/generate', [OutfitController::class, 'generate'])->name('outfits.generate');
+    Route::delete('/outfits/{id}', [OutfitController::class, 'destroy'])->name('outfits.destroy');
+    Route::post('/outfits/{id}/share', [OutfitController::class, 'share'])->name('outfits.share');
 
 });
 
@@ -80,6 +97,7 @@ Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messa
 Route::get('/message/compose/{receiver_id}', [MessageController::class, 'compose'])->name('message.compose');
 Route::post('/message', [MessageController::class, 'send'])->name('message.send');
 
+Route::get('/outfits/public', [OutfitController::class, 'publicOutfits'])->name('outfits.public');
 
 require __DIR__.'/auth.php';
 

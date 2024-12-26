@@ -10,22 +10,34 @@ class MessageController extends Controller
 {
     public function inbox()
     {
-        $messages = \App\Models\Message::with(['sender', 'parentMessage', 'replies']) // Load relationships
-            ->where(function ($query) {
-                // Get all messages received by the user
-                $query->where('receiver_id', auth()->id());
-            })
-            ->orWhere(function ($query) {
-                // Get all messages sent by the user that have replies
-                $query->where('sender_id', auth()->id())
-                      ->whereHas('replies'); // Include only sent messages with replies
-            })
-            ->orderBy('created_at', 'desc') // Order messages by the latest
-            ->get();
-    
+        $messages = \App\Models\Message::with('sender')
+        ->where('receiver_id', auth()->id())
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->unique('sender_id');
+
         return view('inbox', compact('messages'));
     }
     
+    public function chat($userId)
+    {
+        $currentUserId = auth()->id();
+
+        $messages = Message::where(function ($query) use ($currentUserId, $userId) {
+            $query->where('sender_id', $currentUserId)
+                ->where('receiver_id', $userId);
+        })
+        ->orWhere(function ($query) use ($currentUserId, $userId) {
+            $query->where('sender_id', $userId)
+                ->where('receiver_id', $currentUserId);
+        })
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+        $receiver = User::findOrFail($userId);
+
+        return view('chat', compact('messages', 'receiver'));
+    }
 
 
     
@@ -43,27 +55,29 @@ class MessageController extends Controller
             'sender_id' => $request->sender_id,
             'receiver_id' => $request->receiver_id,
             'content' => $request->content,
-            'reply_to_id' => $request->reply_to_id, // Ensure this is set
+            'reply_to_id' => $request->reply_to_id,
         ]);
 
         return redirect()->back()->with('success', 'Reply sent successfully!');
     }
 
 
-
-
     public function send(Request $request)
     {
         $request->validate([
-            'sender_id' => 'required|exists:users,id',
             'receiver_id' => 'required|exists:users,id',
-            'content' => 'required',
+            'content' => 'required|string|max:1000',
         ]);
 
-        Message::create($request->all());
+        $message = Message::create([
+            'sender_id' => auth()->id(),
+            'receiver_id' => $request->receiver_id,
+            'content' => $request->content,
+        ]);
 
-        return redirect()->route('inbox', auth()->id())->with('success', 'Message sent successfully!');
+        return redirect()->back()->with('success', 'Message sent successfully!');
     }
+
 
     public function compose($receiver_id)
     {
