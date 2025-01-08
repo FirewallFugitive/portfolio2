@@ -33,6 +33,14 @@
                     <x-nav-link :href="route('inbox')" :active="request()->routeIs('inbox')"  class="nav-link">
                         {{ __('Inbox') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('clothing.index')" :active="request()->routeIs('clothing.index')"  class="nav-link">
+                        {{ __('Wardrobe') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('outfits.index')" :active="request()->routeIs('outfits.index')"  class="nav-link">
+                        {{ __('Outfits') }}
+                    </x-nav-link>
                     @endif
 
                     @if(auth()->check() && auth()->user()->is_admin)

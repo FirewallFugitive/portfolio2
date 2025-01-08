@@ -8,14 +8,22 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
-    darkMode: 'class',
+    darkMode: 'class', 
     theme: {
         extend: {
             colors: {
-                'light-bg': '#ffffff',
-                'dark-bg': '#121212',
-                'light-text': '#1a1a1a',
-                'dark-text': '#f1f1f1',
+                light: {
+                    bg: '#F0E7C2',        
+                    text: '#3B0014',      
+                    primary: '#4caf50',   
+                    secondary: '#f1f1f1', 
+                },
+                dark: {
+                    bg: '#121212',        
+                    text: '#f1f1f1',     
+                    primary: '#1f8c4e', 
+                    secondary: '#222222', 
+                },
             },
         },
     },

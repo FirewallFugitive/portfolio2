@@ -68,14 +68,18 @@ class MessageController extends Controller
             'receiver_id' => 'required|exists:users,id',
             'content' => 'required|string|max:1000',
         ]);
-
+    
         $message = Message::create([
             'sender_id' => auth()->id(),
             'receiver_id' => $request->receiver_id,
             'content' => $request->content,
         ]);
-
-        return redirect()->back()->with('success', 'Message sent successfully!');
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'time' => now()->format('h:i A'),
+        ]);
     }
 
 

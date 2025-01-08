@@ -55,4 +55,10 @@ class User extends Authenticatable
     public function receivedMessages() {
         return $this->hasMany(Message::class, 'receiver_id');
     }
+
+    public function outfits()
+    {
+        return $this->hasMany(Outfit::class);
+    }
+
 }

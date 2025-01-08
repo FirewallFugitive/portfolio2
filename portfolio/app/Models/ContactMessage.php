@@ -26,9 +26,9 @@ class ContactMessage extends Model
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-    public function replies()
+    public function reply()
     {
-        return $this->hasMany(Message::class, 'reply_to_id');
+        return $this->hasOne(AdminReply::class, 'contact_message_id');
     }
 }
 

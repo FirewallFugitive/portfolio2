@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inbox', [MessageController::class, 'inbox'])->name('inbox');
     Route::get('/chat/{user}', [MessageController::class, 'chat'])->name('chat');
-    Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+    Route::post('/messages/send', [MessageController::class, 'send'])->name('messages.send');
 
     Route::post('/news/{news}/react', [NewsController::class, 'react'])->name('news.react');
 
@@ -70,14 +70,13 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/outfits', [OutfitController::class, 'index'])->name('outfits.index');
-    Route::post('/outfits', [OutfitController::class, 'store'])->name('outfits.store');
     Route::get('/outfits/generate', [OutfitController::class, 'generate'])->name('outfits.generate');
     Route::delete('/outfits/{id}', [OutfitController::class, 'destroy'])->name('outfits.destroy');
     Route::post('/outfits/{id}/share', [OutfitController::class, 'share'])->name('outfits.share');
 
-});
+    Route::get('/user/{id}', [DashboardController::class, 'userProfile'])->name('user.profile');
 
-Route::get('/dashboard-search', [DashboardController::class, 'searchUsers'])->name('search.users');
+});
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 

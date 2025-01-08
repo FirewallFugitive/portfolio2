@@ -11,25 +11,52 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Models\News;
+use App\Models\Outfit;
 
 
 class DashboardController extends Controller
 {
-    // search users
-    public function searchUsers(Request $request): View
+    public function index(Request $request): View
     {
-        $users = User::where('name', 'like', '%' . $request->input('search') . '%')
+        $search = $request->input('search');
+
+        $outfits = Outfit::where('isPublic', true)
+            ->where('user_id', '!=', auth()->id())
+            ->with(['user'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('search', [
-            'users' => $users,
-        ]);
+        if ($search) {
+            $searchLower = strtolower($search);
+    
+            $outfits = $outfits->filter(function ($outfit) use ($searchLower) {
+                if (str_contains(strtolower($outfit->user->name), $searchLower)) {
+                    return true;
+                }
+    
+                if (str_contains(strtolower($outfit->name), $searchLower)) {
+                    return true;
+                }
+
+                foreach ($outfit->clothingItems as $item) {
+                    if (str_contains(strtolower($item->color), $searchLower)) {
+                        return true;
+                    }
+                }
+    
+                return false;
+            });
+        }
+    
+        return view('dashboard', compact('outfits', 'search'));
     }
 
-    public function index()
+    public function userProfile($id)
     {
-        $news = News::orderBy('publication_date', 'desc')->take(5)->get();
-        return view('dashboard', compact('news'));
+        $user = User::findOrFail($id);
+        $outfits = $user->outfits()->where('isPublic', true)->get();
+
+        return view('profile/user-profile', compact('user', 'outfits'));
     }
 
 }

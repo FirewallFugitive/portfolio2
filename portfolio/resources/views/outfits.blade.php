@@ -16,12 +16,65 @@
             <h3 class="mb-4 text-lg font-semibold text-gray-700 dark:text-gray-300">Your Outfits</h3>
             <div class="grid grid-cols-1 gap-4">
                 @foreach ($outfits as $outfit)
-                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow flex justify-between items-center">
-                        <div>
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow flex justify-between items-start">
+                        <!-- Left Section: Outfit Details -->
+                        <div class="flex-1">
                             <h4 class="text-gray-800 dark:text-gray-200 font-semibold">{{ $outfit->name }}</h4>
-                            <p class="text-gray-500 dark:text-gray-400 mt-2">Clothing Items:</p>
+                            <p class="text-gray-500 dark:text-gray-400 mt-2 mb-4">Clothing Items:</p>
+                            <div class="flex flex-col items-center gap-4">
+                                @php 
+                                    $items = collect(json_decode($outfit->clothing_item_ids))->map(function ($itemId) {
+                                        return \App\Models\ClothingItem::find($itemId);
+                                    })->filter();
+                                @endphp
+
+                                <!-- Top -->
+                                @if ($items->where('type', 'Top')->first())
+                                    @php $item = $items->where('type', 'Top')->first(); @endphp
+                                    <div class="text-center">
+                                        <img src="data:image/jpeg;base64,{{ $item->image_data }}" 
+                                            alt="{{ $item->type }}" 
+                                            class="w-24 h-24 object-contain mb-2 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300">{{ $item->type }} - {{ $item->color }}</p>
+                                    </div>
+                                @endif
+
+                                <!-- Bottom -->
+                                @if ($items->where('type', 'Bottom')->first())
+                                    @php $item = $items->where('type', 'Bottom')->first(); @endphp
+                                    <div class="text-center">
+                                        <img src="data:image/jpeg;base64,{{ $item->image_data }}" 
+                                            alt="{{ $item->type }}" 
+                                            class="w-24 h-24 object-contain mb-2 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300">{{ $item->type }} - {{ $item->color }}</p>
+                                    </div>
+                                @endif
+
+                                <!-- Shoes -->
+                                @if ($items->where('type', 'Shoes')->first())
+                                    @php $item = $items->where('type', 'Shoes')->first(); @endphp
+                                    <div class="text-center">
+                                        <img src="data:image/jpeg;base64,{{ $item->image_data }}" 
+                                            alt="{{ $item->type }}" 
+                                            class="w-24 h-24 object-contain mb-2 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300">{{ $item->type }} - {{ $item->color }}</p>
+                                    </div>
+                                @endif
+
+                                <!-- Hat -->
+                                @if ($items->where('type', 'Hat')->first())
+                                    @php $item = $items->where('type', 'Hat')->first(); @endphp
+                                    <div class="text-center">
+                                        <img src="data:image/jpeg;base64,{{ $item->image_data }}" 
+                                            alt="{{ $item->type }}" 
+                                            class="w-24 h-24 object-contain mb-2 rounded-lg">
+                                        <p class="text-gray-600 dark:text-gray-300">{{ $item->type }} - {{ $item->color }}</p>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
 
+                        <!-- Right Section: Buttons -->
                         <div class="flex flex-col items-end gap-2">
                             <form action="{{ route('outfits.destroy', $outfit->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this outfit?');">
                                 @csrf
@@ -43,56 +96,8 @@
                             @endif
                         </div>
                     </div>
-                    <div class="flex flex-col items-center gap-4 mt-4">
-                        @foreach (json_decode($outfit->clothing_item_ids) as $itemId)
-                            @php $item = \App\Models\ClothingItem::find($itemId); @endphp
-                            @if ($item)
-                                <div class="text-center">
-                                    <img src="data:image/jpeg;base64,{{ $item->image_data }}" 
-                                        alt="{{ $item->type }}" 
-                                        class="w-24 h-24 object-contain mb-2 rounded-lg">
-                                    <p class="text-gray-600 dark:text-gray-300">{{ $item->type }} - {{ $item->color }}</p>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
                 @endforeach
             </div>
         </div>
     </div>
 </x-app-layout>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const clothingGrid = document.getElementById('clothing-grid');
-
-        clothingGrid.addEventListener('click', (event) => {
-            const item = event.target.closest('.clothing-item');
-
-            if (item) {
-                const checkbox = item.closest('label').querySelector('input[type="checkbox"]');
-                const category = checkbox.getAttribute('data-category');
-
-                const checkboxesInCategory = document.querySelectorAll(`input[data-category="${category}"]`);
-                checkboxesInCategory.forEach(cb => {
-                    cb.checked = false;
-                    cb.closest('label').querySelector('.clothing-item').classList.remove('selected');
-                });
-
-                checkbox.checked = true;
-                item.classList.add('selected');
-            }
-        });
-    });
-</script>
-
-<style>
-    .clothing-item.selected {
-        background-color: #3b82f6; 
-        border-color: #2563eb;
-        color: white;
-    }
-    .clothing-item.selected p {
-        color: white;
-    }
-</style>

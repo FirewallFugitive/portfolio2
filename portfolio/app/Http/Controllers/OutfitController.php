@@ -31,13 +31,6 @@ class OutfitController extends Controller
         return view('outfits', compact('outfits', 'clothingItems'));
     }    
 
-    public function publicOutfits()
-    {
-        $outfits = \App\Models\Outfit::where('isPublic', true)->get();
-
-        return view('public_outfits', compact('outfits'));
-    }
-
     public function generate()
     {
         $userId = auth()->id();
