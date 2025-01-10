@@ -42,6 +42,7 @@ Dit project is een Laravel-gebaseerde webapplicatie waarmee gebruikers hun kledi
 
    ```bash
    cd portfolio2
+   cd portfolio
    composer install
    npm install
    ```
