@@ -41,6 +41,7 @@ Dit project is een Laravel-gebaseerde webapplicatie waarmee gebruikers hun kledi
 2. **Installeer afhankelijkheden:**
 
    ```bash
+   cd portfolio2
    composer install
    npm install
    ```
