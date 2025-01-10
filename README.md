@@ -90,12 +90,12 @@ Dit project is een Laravel-gebaseerde webapplicatie waarmee gebruikers hun kledi
     ```
 
 ## Database opzetten en vullen
-Migraties uitvoeren: Maak de benodigde tabellen in je database:
+Migraties uitvoeren:
 
 ```bash
 php artisan migrate
 ```
-Seed de database: Voeg standaarddata toe, zoals een admin-gebruiker:
+Seed de database:
 
 ```bash
 php artisan db:seed
