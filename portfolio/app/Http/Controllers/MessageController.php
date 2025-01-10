@@ -74,12 +74,8 @@ class MessageController extends Controller
             'receiver_id' => $request->receiver_id,
             'content' => $request->content,
         ]);
-    
-        return response()->json([
-            'status' => 'success',
-            'message' => $message,
-            'time' => now()->format('h:i A'),
-        ]);
+
+        return redirect()->back()->with('success', 'Message sent successfully!');
     }
 
 
